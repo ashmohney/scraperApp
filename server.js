@@ -1,25 +1,25 @@
 // Dependencies
-var express = require("express");
-var logger = require("morgan");
-var mongoose = require("mongoose");
-var path = require("path");
+const express = require("express");
+const logger = require("morgan");
+const mongoose = require("mongoose");
+const path = require("path");
 
 // Requiring Note and Article models
-var Note = require("./models/Note.js");
-var Article = require("./models/Article.js");
+const Note = require("./models/Note.js");
+const Article = require("./models/Article.js");
 
 // Scraping tools
-var request = require("request");
-var cheerio = require("cheerio");
+const request = require("request");
+const cheerio = require("cheerio");
 
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
 
 //Define port
-var port = process.env.PORT || 3000
+const port = process.env.PORT || 3000
 
 // Initialize Express
-var app = express();
+const app = express();
 
 // Use morgan and body parser with our app
 app.use(logger("dev"));
@@ -32,7 +32,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Set Handlebars.
-var exphbs = require("express-handlebars");
+const exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({
     defaultLayout: "main",
@@ -41,8 +41,11 @@ app.engine("handlebars", exphbs({
 app.set("view engine", "handlebars");
 
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/scraperApp", { useNewUrlParser: true });
-var db = mongoose.connection;
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraperApp";
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+
+const db = mongoose.connection;
 
 // Show any mongoose errors
 db.on("error", function(error) {
